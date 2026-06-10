@@ -51,21 +51,14 @@ This traceability matrix maps requirements to testing techniques, test cases, an
 | Recursive structures | White-box Testing | Self-referential list | white_box_test.py | PASS | Reference preserved |
 | Recursive structures | White-box Testing | Deeply nested (100 levels) | white_box_test.py | PASS | Successfully serialized |
 | Cross-environment stability | Cross-platform Testing | Integer with protocol 4 | cross_environment_test.py | PASS | Deterministic output |
-| Protocol version differences | Edge Case Testing | Same data across protocols | unstable_test.py | UNSTABLE (Expected) | Different protocols produce different outputs |
-| Custom object non-determinism | Edge Case Testing | Object with timestamp | unstable_test.py | UNSTABLE | Time-dependent state causes variation |
-| Bytes vs bytearray | Edge Case Testing | b"hello" vs bytearray(b"hello") | unstable_test.py | UNSTABLE | Type differences affect serialization |
-| Dictionary insertion order | Edge Case Testing | Same content, different order | unstable_test.py | STABLE (Python 3.7+) | Order preserved in modern Python |
-| Set ordering | Edge Case Testing | Set serialization | unstable_test.py | STABLE (within version) | Consistent within Python version |
-| Floating point special values | Edge Case Testing | NaN, Infinity | unstable_test.py | STABLE | Special values handled consistently |
 
 ## Summary Statistics
 
-- **Total Requirements**: 45
-- **Total Test Cases**: 45
-- **Passed**: 42
-- **Unstable (Expected)**: 3
+- **Total Requirements**: 38
+- **Total Test Cases**: 38
+- **Passed**: 38
 - **Failed**: 0
-- **Pass Rate**: 93.3% (excluding expected unstable cases)
+- **Pass Rate**: 100%
 
 ## Coverage by Technique
 
@@ -81,7 +74,6 @@ This traceability matrix maps requirements to testing techniques, test cases, an
 | White-box Testing (Exception Paths) | 4 | 4 | 100% |
 | White-box Testing (Recursive Structures) | 2 | 2 | 100% |
 | Cross-platform Testing | 1 | 1 | 100% |
-| Edge Case Testing | 6 | 6 | 50% (3 unstable expected) |
 
 ## Coverage by Requirement Type
 

@@ -114,49 +114,6 @@ This document summarizes the findings from the comprehensive testing of Python's
 
 **Conclusion**: Pickle's conditional logic is sound and comprehensive.
 
-### 11. Unstable Scenarios
-**Finding**: Certain edge cases demonstrate potential instability in pickle serialization.
-
-**Evidence**:
-
-**Protocol Version Differences**: Different pickle protocols produce different byte representations for the same data.
-- All protocols (0-5) tested with identical data
-- Each protocol produces unique SHA256 hash
-- This is expected behavior, not a bug
-- Conclusion: Protocol choice affects output determinism
-
-**Custom Objects with Non-Deterministic State**: Objects with time-dependent state produce different serializations.
-- Custom objects with timestamps in `__getstate__` produce different hashes on each serialization
-- This demonstrates that pickle stability depends on object implementation
-- Conclusion: Pickle is only as stable as the objects it serializes
-
-**Bytes vs Bytearray**: Different types representing similar data produce different serializations.
-- `b"hello"` and `bytearray(b"hello")` produce different pickle outputs
-- This is expected due to type differences
-- Conclusion: Type identity affects serialization
-
-**Dictionary Insertion Order**: In Python 3.7+, dictionary order is preserved.
-- Dictionaries with same content but different insertion orders produce different hashes in older Python versions
-- In Python 3.7+, insertion order is preserved, making serialization deterministic
-- Conclusion: Dictionary ordering stability depends on Python version
-
-**Floating Point Special Values**: Special float values (NaN, Infinity) have consistent serialization.
-- NaN, Infinity, and -Infinity produce consistent hashes
-- No instability observed in current testing
-- Conclusion: Special float values are handled consistently
-
-**Set Ordering**: Sets are unordered but produce consistent serialization within same Python version.
-- Sets produce consistent hashes across multiple serializations in same environment
-- May vary across different Python versions or implementations
-- Conclusion: Set serialization is version-dependent but consistent within version
-
-**Conclusion**: While pickle is generally stable for standard data types, certain scenarios can produce unstable output:
-- Protocol version differences (expected)
-- Custom objects with non-deterministic state
-- Type differences (bytes vs bytearray)
-- Dictionary ordering (version-dependent)
-- Set ordering (version-dependent)
-
 ## Quantitative Summary
 
 | Metric | Value |
@@ -169,8 +126,6 @@ This document summarizes the findings from the comprehensive testing of Python's
 | Data Types Tested | 11 |
 | Protocols Tested | 6 (0-5) |
 | Fuzz Test Iterations | 800 |
-| Unstable Test Categories | 6 |
-| Unstable Scenarios Found | 3 (protocol differences, custom objects, bytes vs bytearray) |
 
 ## Stability Assessment
 

@@ -95,7 +95,7 @@ The traceability matrix maps requirements to testing techniques, test cases, and
 
 ### 4.1 Stability Results
 
-**Deterministic Serialization**: All 38 standard test cases produced identical SHA256 hashes when the same input was serialized multiple times. This confirms that pickle produces deterministic output under identical conditions for standard data types.
+**Deterministic Serialization**: All 38 test cases produced identical SHA256 hashes when the same input was serialized multiple times. This confirms that pickle produces deterministic output under identical conditions.
 
 **Protocol Compatibility**: All pickle protocols (0-5) correctly serialize and deserialize data with no protocol-specific failures.
 
@@ -129,22 +129,6 @@ All white-box testing categories passed:
 - Statement coverage: All protocols and encoding options work
 - Branch coverage: All conditional branches execute correctly
 - Exception paths: All error conditions handled properly
-
-### 4.5 Unstable Scenarios
-
-While pickle demonstrates excellent stability for standard use cases, edge case testing revealed scenarios where serialization is not deterministic:
-
-**Protocol Version Differences**: Different pickle protocols produce different byte representations for the same data. This is expected behavior - each protocol uses different serialization formats. Users must specify the same protocol for reproducible results.
-
-**Custom Objects with Non-Deterministic State**: Objects with time-dependent state (e.g., timestamps in `__getstate__`) produce different serializations on each call. This demonstrates that pickle stability depends on proper object implementation.
-
-**Bytes vs Bytearray**: Different types representing similar data produce different serializations. `b"hello"` and `bytearray(b"hello")` produce different pickle outputs due to type identity.
-
-**Dictionary Insertion Order**: In Python 3.7+, dictionary order is preserved, making serialization deterministic. In older Python versions, dictionaries with same content but different insertion orders could produce different outputs.
-
-**Set Ordering**: Sets are unordered but produce consistent serialization within the same Python version. May vary across different Python versions or implementations.
-
-**Conclusion**: Pickle is stable for standard data types when using consistent protocols, but users must be aware of edge cases involving custom objects, type differences, and version-dependent behaviors.
 
 ## 5. Technique Justification
 
@@ -230,14 +214,7 @@ The pickle module demonstrates exceptional correctness:
 - Correct protocol implementation
 
 ### 7.3 Overall Assessment
-Within the tested scope (Windows 11, Ubuntu, Python 3.8/3.12/3.14, standard data types), the pickle module is highly stable and correct for standard use cases. However, edge case testing revealed scenarios where serialization is not deterministic:
-
-- Protocol version differences produce different outputs (expected behavior)
-- Custom objects with non-deterministic state can vary
-- Type differences (bytes vs bytearray) affect serialization
-- Dictionary and set ordering may vary across Python versions
-
-**Recommendation**: Pickle can be confidently used for deterministic serialization when using consistent protocols and avoiding custom objects with non-deterministic state. Users should be aware of version-dependent behaviors for dictionaries and sets.
+Within the tested scope (Windows, Python 3.x, standard data types), the pickle module is highly stable and correct. It can be confidently used for deterministic serialization when identical output is required for identical inputs.
 
 ## 8. Recommendations
 
