@@ -7,6 +7,7 @@ These are legitimate edge cases that demonstrate potential instability.
 import pickle
 import hashlib
 import sys
+import time
 
 
 def get_pickle_hash(data, protocol=None):
@@ -18,6 +19,21 @@ def get_pickle_hash(data, protocol=None):
     return hashlib.sha256(pickle_data).hexdigest()
 
 
+class CustomObject:
+    """Custom object with non-deterministic state."""
+    def __init__(self, value):
+        self.value = value
+        self.timestamp = None
+    
+    def __getstate__(self):
+        # Simulate non-deterministic state
+        return {'value': self.value, 'timestamp': time.time()}
+    
+    def __setstate__(self, state):
+        self.value = state['value']
+        self.timestamp = state['timestamp']
+
+
 def test_set_ordering():
     """
     Test that sets may produce different pickle outputs due to unordered nature.
@@ -25,14 +41,22 @@ def test_set_ordering():
     """
     print("\n=== Unstable Test: Set Ordering ===")
     
-    # Create a set
-    data = {3, 1, 4, 1, 5, 9, 2, 6}
+    # Create sets with same elements but different creation order
+    # This can cause different internal ordering in some Python versions
+    set1 = set()
+    for i in [3, 1, 4, 1, 5, 9, 2, 6]:
+        set1.add(i)
     
-    # Serialize multiple times
-    hash1 = get_pickle_hash(data)
-    hash2 = get_pickle_hash(data)
+    set2 = set()
+    for i in [6, 2, 9, 5, 1, 4, 1, 3]:
+        set2.add(i)
     
-    print(f"Input: {data}")
+    # Serialize both sets
+    hash1 = get_pickle_hash(set1)
+    hash2 = get_pickle_hash(set2)
+    
+    print(f"Set 1 (created with [3,1,4,1,5,9,2,6]): {set1}")
+    print(f"Set 2 (created with [6,2,9,5,1,4,1,3]): {set2}")
     print(f"Hash 1: {hash1}")
     print(f"Hash 2: {hash2}")
     
@@ -41,7 +65,7 @@ def test_set_ordering():
         print("Note: Sets may still vary across different Python versions or implementations")
         return False  # Not unstable in this run
     else:
-        print("Result: UNSTABLE - Set serialization varies")
+        print("Result: UNSTABLE - Set serialization varies based on creation order")
         return True
 
 
@@ -118,19 +142,13 @@ def test_custom_object_with_state():
     """
     print("\n=== Unstable Test: Custom Object with State ===")
     
-    class CustomObject:
-        def __init__(self, value):
-            self.value = value
-            self.timestamp = None  # Could be non-deterministic
-        
-        def __getstate__(self):
-            # Simulate non-deterministic state
-            import time
-            return {'value': self.value, 'timestamp': time.time()}
-    
     data = CustomObject(42)
     
     hash1 = get_pickle_hash(data)
+    
+    # Add a small delay to ensure timestamp changes
+    time.sleep(0.01)
+    
     hash2 = get_pickle_hash(data)
     
     print(f"Input: CustomObject(value=42)")
