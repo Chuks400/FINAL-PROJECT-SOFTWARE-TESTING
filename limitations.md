@@ -19,15 +19,15 @@ This document outlines the limitations and shortcomings of the pickle module sta
 - Different Windows versions
 
 ### 2. Limited Python Version Coverage
-**Limitation**: Tests were conducted on Python 3.8, 3.12, and 3.14.
+**Limitation**: Tests were conducted on Python 3.8, 3.9, 3.12, and 3.14.
 
 **Impact**:
-- Cannot verify stability across Python 3.9, 3.10, 3.11
+- Cannot verify stability across Python 3.10, 3.11
 - Potential version-specific pickle behavior for untested versions not verified
 - Protocol version differences across Python releases not fully explored
 
 **Mitigation**: Future testing should include:
-- Python 3.9, 3.10, 3.11
+- Python 3.10, 3.11
 - Python 2.7 (if legacy support needed)
 
 ### 3. Limited Hardware Testing
