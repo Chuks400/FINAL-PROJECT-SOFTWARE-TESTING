@@ -12,4 +12,7 @@ subprocess.run(["python", "fuzz_test.py"])
 print("\nRunning White-Box Tests...")
 subprocess.run(["python", "white_box_test.py"])
 
+print("\nRunning Negative Tests...")
+subprocess.run(["python", "negative_tests.py"])
+
 print("\nALL TESTS COMPLETED")
