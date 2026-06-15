@@ -50,13 +50,15 @@ This traceability matrix maps requirements to testing techniques, test cases, an
 | Branch coverage - Exceptions | White-box Testing | Exception handling paths | white_box_test.py | PASS | All exception paths covered |
 | Recursive structures | White-box Testing | Self-referential list | white_box_test.py | PASS | Reference preserved |
 | Recursive structures | White-box Testing | Deeply nested (100 levels) | white_box_test.py | PASS | Successfully serialized |
+| Protocol difference verification | Negative Testing | Protocol 4 vs Protocol 5 | negative_tests.py | PASS | Hashes differ as expected |
+| Corrupted data handling | Negative Testing | Truncated pickle data | negative_tests.py | PASS | UnpicklingError raised |
 | Cross-environment stability | Cross-platform Testing | Integer with protocol 4 | cross_environment_test.py | PASS | Deterministic output |
 
 ## Summary Statistics
 
-- **Total Requirements**: 38
-- **Total Test Cases**: 38
-- **Passed**: 38
+- **Total Requirements**: 40
+- **Total Test Cases**: 40
+- **Passed**: 40
 - **Failed**: 0
 - **Pass Rate**: 100%
 
@@ -73,6 +75,7 @@ This traceability matrix maps requirements to testing techniques, test cases, an
 | White-box Testing (Branch Coverage) | 3 | 3 | 100% |
 | White-box Testing (Exception Paths) | 4 | 4 | 100% |
 | White-box Testing (Recursive Structures) | 2 | 2 | 100% |
+| Negative Testing | 2 | 2 | 100% |
 | Cross-platform Testing | 1 | 1 | 100% |
 
 ## Coverage by Requirement Type
@@ -82,10 +85,12 @@ This traceability matrix maps requirements to testing techniques, test cases, an
 | Stable serialization | 30 | 30 | 100% |
 | Correct deserialization | 4 | 4 | 100% |
 | Invalid pickle handling | 4 | 4 | 100% |
+| Negative testing | 2 | 2 | 100% |
 
 ## Notes
 
-- All tests were conducted on Python 3.x on Windows
+- Tests were conducted on Python 3.8, 3.9, 3.12, 3.14 on Windows 11 and Ubuntu
 - SHA256 hashing used to verify identical output
 - Random seed set to 42 for reproducibility in fuzz testing
 - All pickle protocols (0-5) tested for compatibility
+- Negative testing added for protocol differences and corrupted data handling

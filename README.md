@@ -10,7 +10,10 @@ pickle-stability-project/
 ├── boundary_pickle_test.py       # Boundary value analysis tests
 ├── fuzz_test.py                  # Fuzz testing with random inputs
 ├── white_box_test.py             # White-box testing (control flow, data flow, coverage)
+├── negative_tests.py             # Negative testing (protocol differences, corrupted data)
+├── run_all.py                    # Automated test runner
 ├── cross_environment_test.py     # Cross-environment verification
+├── results.txt                   # Comprehensive test results log
 ├── traceability_matrix.md        # Requirements to test cases mapping
 ├── findings.md                   # Test results and findings
 ├── limitations.md                # Test suite limitations
@@ -56,6 +59,15 @@ pickle-stability-project/
    - Collection branches
    - Exception branches
 
+### Negative Testing
+1. **Protocol Difference Verification**: Confirms different protocols produce different hashes
+   - Tests protocol 4 vs protocol 5
+   - Verifies expected hash differences
+
+2. **Corrupted Data Handling**: Tests error handling for invalid pickle data
+   - Truncated pickle data
+   - Verifies UnpicklingError is raised
+
 ## Running the Tests
 
 ### Prerequisites
@@ -77,31 +89,34 @@ python fuzz_test.py
 # White-box testing
 python white_box_test.py
 
+# Negative testing
+python negative_tests.py
+
 # Cross-environment test
 python cross_environment_test.py
 ```
 
 ### Running All Tests
 ```bash
-# Run all test suites
-python black_box_pickle_test.py
-python boundary_pickle_test.py
-python fuzz_test.py
-python white_box_test.py
+# Run all test suites using automated runner
+python run_all.py
 ```
 
 ## Test Results Summary
 
 | Metric | Value |
 |--------|-------|
-| Total Test Cases | 38 |
-| Passed | 38 |
+| Total Test Cases | 40 |
+| Passed | 40 |
 | Failed | 0 |
 | Pass Rate | 100% |
-| Testing Techniques | 5 |
+| Testing Techniques | 6 |
 | Data Types Tested | 11 |
 | Protocols Tested | 6 (0-5) |
 | Fuzz Test Iterations | 800 |
+| Negative Test Cases | 2 |
+| Operating Systems Tested | 2 (Windows 11, Ubuntu) |
+| Python Versions Tested | 4 (3.8, 3.9, 3.12, 3.14) |
 
 ## Key Findings
 
@@ -111,11 +126,12 @@ python white_box_test.py
 4. **Edge case handling**: Robust handling of extreme values and large structures
 5. **Recursive structures**: Self-referential and deeply nested structures handled correctly
 6. **Exception handling**: Invalid data properly raises appropriate exceptions
+7. **Negative testing**: Different protocols correctly produce different hashes, and corrupted data is properly rejected
 
 ## Limitations
 
-- Single operating system (Windows) tested
-- Single Python version tested
+- Limited operating systems (Windows 11, Ubuntu tested; macOS not tested)
+- Limited Python versions (3.8, 3.9, 3.12, 3.14 tested; 3.10, 3.11 not tested)
 - Limited object types (custom classes not tested)
 - Limited Unicode testing
 - No performance testing

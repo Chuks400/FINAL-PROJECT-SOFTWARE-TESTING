@@ -114,18 +114,30 @@ This document summarizes the findings from the comprehensive testing of Python's
 
 **Conclusion**: Pickle's conditional logic is sound and comprehensive.
 
+### 11. Negative Testing Results
+**Finding**: Negative testing confirms proper behavior for protocol differences and corrupted data.
+
+**Evidence**:
+- Protocol difference test: Protocol 4 and Protocol 5 produce different hashes for the same input (expected behavior)
+- Corrupted data test: Truncated pickle data correctly raises UnpicklingError
+
+**Conclusion**: Pickle correctly handles protocol differences and properly rejects corrupted data with appropriate exceptions.
+
 ## Quantitative Summary
 
 | Metric | Value |
 |--------|-------|
-| Total Test Cases | 38 |
-| Passed | 38 |
+| Total Test Cases | 40 |
+| Passed | 40 |
 | Failed | 0 |
 | Pass Rate | 100% |
-| Testing Techniques Used | 5 |
+| Testing Techniques Used | 6 |
 | Data Types Tested | 11 |
 | Protocols Tested | 6 (0-5) |
 | Fuzz Test Iterations | 800 |
+| Negative Test Cases | 2 |
+| Operating Systems Tested | 2 (Windows 11, Ubuntu) |
+| Python Versions Tested | 4 (3.8, 3.9, 3.12, 3.14) |
 
 ## Stability Assessment
 
@@ -161,6 +173,8 @@ Based on these findings:
 4. **Edge cases are handled robustly**: No issues found with extreme values or large data structures.
 
 5. **Error handling is comprehensive**: Invalid data is properly rejected with appropriate exceptions.
+
+6. **Negative testing confirms robustness**: Different protocols correctly produce different hashes, and corrupted data is properly rejected.
 
 ## Unexpected Findings
 
