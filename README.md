@@ -107,9 +107,10 @@ python run_all.py
 | Metric | Value |
 |--------|-------|
 | Total Test Cases | 40 |
-| Passed | 40 |
+| Passed | 37 |
+| Partial | 3 |
 | Failed | 0 |
-| Pass Rate | 100% |
+| Pass Rate | 92.5% (37/40) |
 | Testing Techniques | 6 |
 | Data Types Tested | 11 |
 | Protocols Tested | 6 (0-5) |
@@ -117,6 +118,8 @@ python run_all.py
 | Negative Test Cases | 2 |
 | Operating Systems Tested | 2 (Windows 11, Ubuntu) |
 | Python Versions Tested | 4 (3.8, 3.9, 3.12, 3.14) |
+
+**Note**: 3 partial results from exception path testing where different exception types were raised than expected (EOFError and ValueError instead of UnpicklingError). All invalid data was properly rejected.
 
 ## Key Findings
 

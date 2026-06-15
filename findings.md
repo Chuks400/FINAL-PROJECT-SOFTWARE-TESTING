@@ -123,14 +123,30 @@ This document summarizes the findings from the comprehensive testing of Python's
 
 **Conclusion**: Pickle correctly handles protocol differences and properly rejects corrupted data with appropriate exceptions.
 
+### 12. Unstable Findings
+**Finding**: Exception path testing revealed partial results where different exception types are raised than expected.
+
+**Evidence**:
+- Empty bytes: PARTIAL - Raised EOFError instead of expected UnpicklingError
+- Invalid protocol: PARTIAL - Raised ValueError instead of expected UnpicklingError
+- Truncated after header: PARTIAL - Raised EOFError instead of expected UnpicklingError
+
+**Analysis**: Pickle raises different exception types depending on the specific type of invalid data:
+- EOFError is raised for truncated or empty data
+- ValueError is raised for invalid protocol markers
+- UnpicklingError is raised for corrupted opcodes and random garbage
+
+**Conclusion**: While all invalid data is properly rejected, the specific exception type varies. This does not affect stability or correctness for valid data, but exception handling code needs to account for multiple exception types when dealing with potentially invalid pickle data.
+
 ## Quantitative Summary
 
 | Metric | Value |
 |--------|-------|
 | Total Test Cases | 40 |
-| Passed | 40 |
+| Passed | 37 |
+| Partial | 3 |
 | Failed | 0 |
-| Pass Rate | 100% |
+| Pass Rate | 92.5% (37/40) |
 | Testing Techniques Used | 6 |
 | Data Types Tested | 11 |
 | Protocols Tested | 6 (0-5) |
@@ -138,6 +154,8 @@ This document summarizes the findings from the comprehensive testing of Python's
 | Negative Test Cases | 2 |
 | Operating Systems Tested | 2 (Windows 11, Ubuntu) |
 | Python Versions Tested | 4 (3.8, 3.9, 3.12, 3.14) |
+
+**Note**: The 3 partial results are from exception path testing where different exception types were raised than expected (EOFError and ValueError instead of UnpicklingError). All invalid data was properly rejected, but the specific exception type varies depending on the type of invalid data.
 
 ## Stability Assessment
 

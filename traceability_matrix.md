@@ -47,7 +47,7 @@ This traceability matrix maps requirements to testing techniques, test cases, an
 | Statement coverage | White-box Testing | File-like object operations | white_box_test.py | PASS | BytesIO dump/load tested |
 | Branch coverage - Data types | White-box Testing | All Python data types | white_box_test.py | PASS | All type branches covered |
 | Branch coverage - Collections | White-box Testing | Empty vs non-empty collections | white_box_test.py | PASS | All collection branches covered |
-| Branch coverage - Exceptions | White-box Testing | Exception handling paths | white_box_test.py | PASS | All exception paths covered |
+| Branch coverage - Exceptions | White-box Testing | Exception handling paths | white_box_test.py | PARTIAL | 3/5 paths raised different exceptions |
 | Recursive structures | White-box Testing | Self-referential list | white_box_test.py | PASS | Reference preserved |
 | Recursive structures | White-box Testing | Deeply nested (100 levels) | white_box_test.py | PASS | Successfully serialized |
 | Protocol difference verification | Negative Testing | Protocol 4 vs Protocol 5 | negative_tests.py | PASS | Hashes differ as expected |
@@ -58,9 +58,10 @@ This traceability matrix maps requirements to testing techniques, test cases, an
 
 - **Total Requirements**: 40
 - **Total Test Cases**: 40
-- **Passed**: 40
+- **Passed**: 37
+- **Partial**: 3
 - **Failed**: 0
-- **Pass Rate**: 100%
+- **Pass Rate**: 92.5% (37/40)
 
 ## Coverage by Technique
 
@@ -73,7 +74,7 @@ This traceability matrix maps requirements to testing techniques, test cases, an
 | White-box Testing (Data Flow) | 2 | 2 | 100% |
 | White-box Testing (Statement Coverage) | 3 | 3 | 100% |
 | White-box Testing (Branch Coverage) | 3 | 3 | 100% |
-| White-box Testing (Exception Paths) | 4 | 4 | 100% |
+| White-box Testing (Exception Paths) | 4 | 4 | 75% (3 PARTIAL) |
 | White-box Testing (Recursive Structures) | 2 | 2 | 100% |
 | Negative Testing | 2 | 2 | 100% |
 | Cross-platform Testing | 1 | 1 | 100% |
@@ -85,6 +86,7 @@ This traceability matrix maps requirements to testing techniques, test cases, an
 | Stable serialization | 30 | 30 | 100% |
 | Correct deserialization | 4 | 4 | 100% |
 | Invalid pickle handling | 4 | 4 | 100% |
+| Exception handling | 1 | 1 | 0% (1 PARTIAL) |
 | Negative testing | 2 | 2 | 100% |
 
 ## Notes
@@ -94,3 +96,4 @@ This traceability matrix maps requirements to testing techniques, test cases, an
 - Random seed set to 42 for reproducibility in fuzz testing
 - All pickle protocols (0-5) tested for compatibility
 - Negative testing added for protocol differences and corrupted data handling
+- 3 partial results from exception path testing where different exception types were raised than expected (EOFError and ValueError instead of UnpicklingError)
